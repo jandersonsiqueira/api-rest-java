@@ -42,8 +42,12 @@ public class ProdutoController {
 					p.setNome(produto.getNome());
 					p.setAtivo(produto.isAtivo());
 					p.setSku(produto.getSku());
-					p.setCategoria(produto.getCategoria());
+					p.setValorCusto(produto.getValorCusto());
+					p.setIcms(produto.getIcms());
+					p.setValorVenda(produto.getValorVenda());
 					p.setQuantidadeEmEstoque(produto.getQuantidadeEmEstoque());
+					p.setCategoriaId(produto.getCategoriaId());
+					p.setUsuarioId(produto.getUsuarioId());
 					Produto updatedProduto = produtoService.update(p);
 					return ResponseEntity.ok(updatedProduto);
 				})
