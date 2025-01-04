@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "produto")
@@ -24,8 +24,7 @@ public class Produto {
 	private String sku;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "categoria_id", nullable = false)
-	@JsonIgnore
+	@JoinColumn(name = "categoria_id", nullable = true)
 	private Categoria categoria;
 
 	@Column(nullable = false, precision = 10, scale = 2)
@@ -44,8 +43,7 @@ public class Produto {
 	private int quantidadeEmEstoque;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "usuario_id", nullable = false)
-	@JsonIgnore
+	@JoinColumn(name = "usuario_id", nullable = true)
 	private Usuario usuario;
 
 	public Long getId() {
@@ -80,12 +78,18 @@ public class Produto {
 		this.sku = sku;
 	}
 
-	public Categoria getCategoria() {
-		return categoria;
+	@JsonProperty("categoria_id")
+	public Long getCategoriaId() {
+		return categoria != null ? categoria.getId() : null;
 	}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
+	public void setCategoriaId(Long categoriaId) {
+		if (categoriaId != null) {
+			this.categoria = new Categoria();
+			this.categoria.setId(categoriaId);
+		} else {
+			this.categoria = null;
+		}
 	}
 
 	public BigDecimal getValorCusto() {
@@ -128,11 +132,17 @@ public class Produto {
 		this.quantidadeEmEstoque = quantidadeEmEstoque;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	@JsonProperty("usuario_id")
+	public Long getUsuarioId() {
+		return usuario != null ? usuario.getId() : null;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUsuarioId(Long usuarioId) {
+		if (usuarioId != null) {
+			this.usuario = new Usuario();
+			this.usuario.setId(usuarioId);
+		} else {
+			this.usuario = null;
+		}
 	}
 }
