@@ -27,9 +27,8 @@ public class ProdutoService {
 		return produtoRepository.findById(id);
 	}
 
-	public Produto save(Produto produto) {
-		produto.setDataCadastro(LocalDateTime.now());
-		return produtoRepository.save(produto);
+	public List<Produto> saveAll(List<Produto> produtos) {
+		return produtoRepository.saveAll(produtos);
 	}
 
 	public void delete(Long id) {

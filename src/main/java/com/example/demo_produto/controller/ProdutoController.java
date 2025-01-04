@@ -66,9 +66,9 @@ public class ProdutoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Produto> createProduto(@RequestBody Produto produto) {
-		Produto savedProduto = produtoService.save(produto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedProduto);
+	public ResponseEntity<List<Produto>> createProdutos(@RequestBody List<Produto> produtos) {
+		List<Produto> savedProdutos = produtoService.saveAll(produtos);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedProdutos);
 	}
 
 	@PutMapping("/{id}")
