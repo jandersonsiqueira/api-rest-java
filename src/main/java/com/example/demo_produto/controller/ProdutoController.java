@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -60,4 +61,20 @@ public class ProdutoController {
 		produtoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PatchMapping("/{id}/status")
+	public ResponseEntity<Produto> alterarStatusProduto(@PathVariable Long id, @RequestBody Map<String, Boolean> request) {
+		Boolean ativo = request.get("ativo");
+		if (ativo == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		return produtoService.findById(id)
+				.map(produto -> {
+					produto.setAtivo(ativo);
+					Produto produtoAtualizado = produtoService.update(produto);
+					return ResponseEntity.ok(produtoAtualizado);
+				})
+				.orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
 }
