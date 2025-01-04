@@ -4,6 +4,10 @@ import com.example.demo_produto.model.Produto;
 import com.example.demo_produto.service.ProdutoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/produtos")
@@ -20,8 +29,34 @@ public class ProdutoController {
 	private ProdutoService produtoService;
 
 	@GetMapping
-	public ResponseEntity<List<Produto>> getAllProdutos() {
-		return ResponseEntity.ok(produtoService.findAll());
+	@Operation(
+			summary = "Listar produtos com paginação e ordenação",
+			description = "Este endpoint permite listar os produtos com paginação e ordenação. A requisição pode incluir parâmetros de paginação e ordenação, como exemplo: http://localhost:8080/produtos?page=0&size=10&sort=id,asc"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Produtos listados com sucesso"),
+			@ApiResponse(responseCode = "400", description = "Erro nos parâmetros de paginação ou ordenação")
+	})
+	public ResponseEntity<Page<Produto>> getAllProdutos(
+			@Parameter(description = "Número da página (começa em 0)", example = "0")
+			@RequestParam(defaultValue = "0") int page,
+			@Parameter(description = "Quantidade de itens por página", example = "10")
+			@RequestParam(defaultValue = "10") int size,
+			@Parameter(description = "Campo e direção para ordenação (exemplo: nome,asc ou nome,desc)", example = "id,asc")
+			@RequestParam(defaultValue = "id,asc") String sort
+	) {
+		try {
+			String[] sortParams = sort.split(",");
+			String sortField = sortParams[0];
+			Sort.Direction sortDirection = Sort.Direction.fromString(sortParams[1]);
+
+			Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortField));
+
+			Page<Produto> produtos = produtoService.findAll(pageable);
+			return ResponseEntity.ok(produtos);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@GetMapping("/{id}")
