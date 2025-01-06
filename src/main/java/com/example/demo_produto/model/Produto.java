@@ -145,4 +145,11 @@ public class Produto {
 			this.usuario = null;
 		}
 	}
+
+	@PrePersist
+	public void prePersist() {
+		if (this.dataCadastro == null) {
+			this.dataCadastro = LocalDateTime.now();
+		}
+	}
 }

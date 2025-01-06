@@ -1,6 +1,8 @@
 package com.example.demo_produto.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,17 +19,16 @@ public class ProdutoService {
 	private ProdutoRepository produtoRepository;
 
 
-	public List<Produto> findAll() {
-		return produtoRepository.findAll();
+	public Page<Produto> findAll(Pageable pageable) {
+		return produtoRepository.findAll(pageable);
 	}
 
 	public Optional<Produto> findById(Long id) {
 		return produtoRepository.findById(id);
 	}
 
-	public Produto save(Produto produto) {
-		produto.setDataCadastro(LocalDateTime.now());
-		return produtoRepository.save(produto);
+	public List<Produto> saveAll(List<Produto> produtos) {
+		return produtoRepository.saveAll(produtos);
 	}
 
 	public void delete(Long id) {
