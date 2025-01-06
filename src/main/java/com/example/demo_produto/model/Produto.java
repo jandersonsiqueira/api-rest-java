@@ -78,7 +78,7 @@ public class Produto {
 		this.sku = sku;
 	}
 
-	@JsonProperty("categoria_id")
+	@JsonProperty("categoriaId")
 	public Long getCategoriaId() {
 		return categoria != null ? categoria.getId() : null;
 	}
@@ -132,7 +132,7 @@ public class Produto {
 		this.quantidadeEmEstoque = quantidadeEmEstoque;
 	}
 
-	@JsonProperty("usuario_id")
+	@JsonProperty("usuarioId")
 	public Long getUsuarioId() {
 		return usuario != null ? usuario.getId() : null;
 	}

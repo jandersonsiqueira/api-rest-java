@@ -16,6 +16,9 @@ public class Usuario {
 	@Column(nullable = false)
 	private String tipo;
 
+	@Column(nullable = false)
+	private String senha;
+
 	public Usuario() {
 	}
 
@@ -47,5 +50,13 @@ public class Usuario {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 }
