@@ -31,7 +31,7 @@ public class ProdutoController {
 	@GetMapping
 	@Operation(
 			summary = "Listar produtos com paginação e ordenação",
-			description = "Este endpoint permite listar os produtos com paginação e ordenação. A requisição pode incluir parâmetros de paginação e ordenação, como exemplo: http://localhost:8080/produtos?page=0&size=10&sort=id,asc"
+			description = "Este endpoint permite listar os produtos com paginação e ordenação. A requisição pode incluir parâmetros de paginação e ordenação, como exemplo: http://localhost:8080/produto?page=0&size=10&sort=id,asc"
 	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Produtos listados com sucesso"),
